@@ -6,7 +6,8 @@ mod types;
 use anyhow::{Context, Result};
 use clap::Parser;
 use crackers::{
-    bruteforce::BruteforceCracker, dictionary::DictionaryCracker, pattern::PatternCracker,
+    bruteforce::BruteforceCracker, cuda::CudaBruteforceCracker, dictionary::DictionaryCracker,
+    pattern::PatternCracker,
 };
 use openssl::pkcs12::Pkcs12;
 use rayon::ThreadPoolBuilder;
@@ -54,11 +55,19 @@ fn run(args: args::Args) -> Result<()> {
         ))
     } else if args.bruteforce_flag {
         let charset = charset::build_charset(&args)?;
-        Box::new(BruteforceCracker::new(
-            args.minumum_length,
-            args.maximum_length,
-            charset,
-        ))
+        if args.cuda {
+            Box::new(CudaBruteforceCracker::new(
+                args.minumum_length,
+                args.maximum_length,
+                charset,
+            ))
+        } else {
+            Box::new(BruteforceCracker::new(
+                args.minumum_length,
+                args.maximum_length,
+                charset,
+            ))
+        }
     } else if let Some(dict_path) = args.dictionary_path {
         Box::new(DictionaryCracker::new(dict_path, args.delimiter))
     } else {
