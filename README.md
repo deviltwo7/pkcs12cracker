@@ -43,7 +43,7 @@ cargo build --release
 cargo build --release --features cuda
 ```
 
-The `scripts/build_all_features.py` helper will attempt to install the CUDA toolkit on Debian/Ubuntu systems if `nvcc` is missing and it has privileges.
+The `scripts/build_all_features.sh` helper will attempt to install the CUDA toolkit on Debian/Ubuntu systems if `nvcc` is missing and it has privileges.
 
 ### Know-How
 
