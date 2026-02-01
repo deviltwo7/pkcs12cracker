@@ -38,7 +38,12 @@ brew install pkcs12cracker
 git clone https://github.com/wowinter13/pkcs12cracker
 cd pkcs12cracker
 cargo build --release
+
+# Build with CUDA support (optional). Requires a CUDA toolkit install.
+cargo build --release --features cuda
 ```
+
+The `scripts/build_all_features.sh` helper will attempt to install the CUDA toolkit on Debian/Ubuntu systems if `nvcc` is missing and it has privileges.
 
 ### Know-How
 
@@ -70,6 +75,7 @@ Options:
   -m, --min-length <NUM>       Minimum password length for brute force attack [default: 1] [default: 1]
       --max-length <NUM>       Maximum password length for brute force attack [default: 6] [default: 6]
   -b, --brute-force            Enable brute force attack mode
+      --cuda                   Enable CUDA-boosted brute force mode (requires --brute-force)
   -c, --charset <SETS>         Character sets to use in brute force attack
       --custom-chars <CHARS>   Custom character set for brute force attack
       --delimiter <CHAR>       Dictionary file entry delimiter [default: newline] [default: "\n"]
@@ -97,6 +103,24 @@ pkcs12cracker -p "Pass##rd" -s "#" cert.p12
 ```bash
 # Custom character sets
 pkcs12cracker -b -c aAn cert.p12  # alphanumeric
+```
+
+#### CUDA-Boosted Brute Force (Optional)
+
+```bash
+# Requires a binary built with the cuda feature
+pkcs12cracker -b --cuda -c aAn cert.p12
+```
+
+If CUDA is requested but the binary is not built with the `cuda` feature, the cracker will fall back to the CPU implementation.
+
+#### CUDA Hashing Tool (Optional)
+
+Build with `--features cuda` to enable the `cuda-hash` helper binary:
+
+```bash
+# Hash a newline-delimited file using a CUDA-accelerated FNV-1a kernel
+cargo run --features cuda --bin cuda_hash -- --input wordlist.txt --limit 1000
 ```
 
 ### Advanced Usage

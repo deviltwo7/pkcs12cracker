@@ -27,6 +27,10 @@ memmap2 = "0.9.5"
 rayon = "1.10.0"
 num_cpus = "1.16.0"
 log = "0.4.20"
+cudarc = { version = "0.11.9", optional = true, features = ["cuda-version-from-build-system", "nvrtc"] }
+
+[features]
+cuda = ["cudarc"]
 
 [dev-dependencies]
 pretty_assertions = "1.4.0"
