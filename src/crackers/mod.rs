@@ -1,5 +1,6 @@
 //! Password cracking strategies and utilities.
 pub mod bruteforce;
+pub mod cuda;
 pub mod dictionary;
 pub mod pattern;
 

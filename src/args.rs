@@ -92,6 +92,14 @@ pub struct Args {
     )]
     pub bruteforce_flag: bool,
 
+    /// Enable CUDA-boosted brute force mode
+    #[arg(
+        long = "cuda",
+        help = "Enable CUDA-boosted brute force mode (requires --brute-force)",
+        requires = "bruteforce_flag"
+    )]
+    pub cuda: bool,
+
     /// Character sets to use in brute force attack
     #[arg(
         short = 'c',
@@ -152,6 +160,7 @@ impl Default for Args {
             minumum_length: 1,
             maximum_length: 8,
             bruteforce_flag: false,
+            cuda: false,
             delimiter: String::new(),
             threads: 1,
         }
